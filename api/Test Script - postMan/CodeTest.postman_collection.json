@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "f1c017dd-dccd-4555-b8ca-9af9f574585a",
+		"name": "CodeTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Races with meetingId filter only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[1,2]}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Races with visible filter - TRUE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_id\":[1,2],\"visible\":\"TRUE\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Races with visible filter - FALSE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_id\":[1,2],\"visible\":\"FALSE\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

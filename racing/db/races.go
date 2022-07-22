@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/golang/protobuf/ptypes"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 	"strings"
 	"sync"
 	"time"
@@ -63,14 +64,15 @@ func (r *racesRepo) List(filter *racing.ListRacesRequestFilter) ([]*racing.Race,
 
 func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFilter) (string, []interface{}) {
 	var (
-		clauses []string
-		args    []interface{}
+		clauses      []string
+		args         []interface{}
+		visibleValue string
 	)
 
 	if filter == nil {
 		return query, args
 	}
-
+	// filter meetingId
 	if len(filter.MeetingIds) > 0 {
 		clauses = append(clauses, "meeting_id IN ("+strings.Repeat("?,", len(filter.MeetingIds)-1)+"?)")
 
@@ -82,6 +84,25 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 	if len(clauses) != 0 {
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
+
+	// filter visibility
+	if filter.Visible == "TRUE" {
+		visibleValue = "1"
+	}
+	if filter.Visible == "FALSE" {
+		visibleValue = "0"
+	}
+
+	if visibleValue == "1" || visibleValue == "0" {
+		if len(clauses) != 0 {
+			query += " AND visible = " + visibleValue
+		} else {
+			query += " WHERE visible = " + visibleValue
+
+		}
+	}
+
+	log.Printf("The query is %v, %v", query, args)
 
 	return query, args
 }
