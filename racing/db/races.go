@@ -85,7 +85,7 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
 
-	// filter visibility
+	// populate pass in filter value
 	if filter.Visible == "TRUE" {
 		visibleValue = "1"
 	}
@@ -93,6 +93,7 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 		visibleValue = "0"
 	}
 
+	//filter by visibility
 	if visibleValue == "1" || visibleValue == "0" {
 		if len(clauses) != 0 {
 			query += " AND visible = " + visibleValue
@@ -100,16 +101,19 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 			query += " WHERE visible = " + visibleValue
 
 		}
+
 	}
+
+	// add order by field
+	orderByField := getOrderByfield(filter.OrderBy)
+	query += " ORDER BY " + orderByField
 
 	log.Printf("The query is %v, %v", query, args)
 
 	return query, args
 }
 
-func (m *racesRepo) scanRaces(
-	rows *sql.Rows,
-) ([]*racing.Race, error) {
+func (m *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
 	var races []*racing.Race
 
 	for rows.Next() {
@@ -132,7 +136,28 @@ func (m *racesRepo) scanRaces(
 		race.AdvertisedStartTime = ts
 
 		races = append(races, &race)
+
 	}
 
 	return races, nil
+}
+
+func getOrderByfield(inputField string) string {
+
+	var orderByField string
+
+	//switch pass in order by fields
+	switch inputField {
+	case "NAME":
+		orderByField = "name"
+	case "NUMBER":
+		orderByField = "number"
+	case "ID":
+		orderByField = "id"
+	case "MEETING_ID":
+		orderByField = "meeting_id"
+	default:
+		orderByField = "advertised_start_time"
+	}
+	return orderByField
 }
