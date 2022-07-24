@@ -207,7 +207,7 @@ func (r *racesRepo) getFilter(query string, filter *racing.GetRacesRequest) (str
 		return query, args, nil
 	}
 
-	// Filter by an array of car policy ids
+	// Filter by an array of sport ids
 	if len(filter.Id) > 0 {
 		clauses = " WHERE id IN (" + strings.Repeat("?,", len(filter.Id)-1) + "?)"
 		for _, raceId := range filter.Id {
