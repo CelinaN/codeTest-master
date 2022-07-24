@@ -11,6 +11,11 @@ service Racing {
   rpc ListRaces(ListRacesRequest) returns (ListRacesResponse) {
     option (google.api.http) = { post: "/v1/list-races", body: "*" };
   }
+
+  // GetRaces returns a list of races by request IDs
+  rpc GetRaces(GetRacesRequest) returns (GetRacesResponse){
+    option(google.api.http) = {get: "/v1/get-races/{id}"};
+  }
 }
 
 /* Requests/Responses */
@@ -30,6 +35,16 @@ message ListRacesRequestFilter {
   repeated int64 meeting_ids = 1;
   string visible = 2;
   string order_by = 3;
+}
+
+// Request for get races by ID
+message GetRacesRequest {
+  repeated int64 id = 1;
+}
+
+// Response for get races call
+message GetRacesResponse {
+  repeated Race races = 1;
 }
 
 /* Resources */

@@ -19,6 +19,9 @@ type RacesRepo interface {
 
 	// List will return a list of races.
 	List(filter *racing.ListRacesRequestFilter) ([]*racing.Race, error)
+
+	// Get will return a list of races base on request IDs
+	Get(id *racing.GetRacesRequest) ([]*racing.Race, error)
 }
 
 type racesRepo struct {
@@ -113,7 +116,7 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 	return query, args
 }
 
-func (m *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
+func (r *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
 	var races []*racing.Race
 
 	for rows.Next() {
@@ -167,4 +170,57 @@ func getOrderByfield(inputField string) string {
 		orderByField = "advertised_start_time"
 	}
 	return orderByField
+}
+
+func (r *racesRepo) Get(id *racing.GetRacesRequest) ([]*racing.Race, error) {
+	var (
+		err   error
+		query string
+		args  []interface{}
+	)
+
+	query = getRaceQueries()[racesList]
+
+	query, args, err = r.getFilter(query, id)
+	rows, err := r.db.Query(query, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	races, err := r.scanRaces(rows)
+	if err != nil {
+		return nil, err
+	}
+	if races == nil {
+		return nil, nil
+	}
+	return races, err
+}
+
+func (r *racesRepo) getFilter(query string, filter *racing.GetRacesRequest) (string, []interface{}, error) {
+	var (
+		clauses string
+		args    []interface{}
+	)
+
+	if filter == nil {
+		return query, args, nil
+	}
+
+	// Filter by an array of car policy ids
+	if len(filter.Id) > 0 {
+		clauses = " WHERE id IN (" + strings.Repeat("?,", len(filter.Id)-1) + "?)"
+		for _, raceId := range filter.Id {
+			args = append(args, raceId)
+		}
+	}
+
+	if len(clauses) != 0 {
+		query += clauses
+	}
+
+	log.Printf("The query is %v, %v", query, args)
+
+	return query, args, nil
+
 }
