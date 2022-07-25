@@ -2,8 +2,8 @@ package db
 
 import (
 	"database/sql"
-	"github.com/golang/protobuf/ptypes"
 	_ "github.com/mattn/go-sqlite3"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"strings"
 	"sync"
@@ -131,12 +131,7 @@ func (r *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
 			return nil, err
 		}
 
-		ts, err := ptypes.TimestampProto(advertisedStart)
-		if err != nil {
-			return nil, err
-		}
-
-		race.AdvertisedStartTime = ts
+		race.AdvertisedStartTime = timestamppb.New(advertisedStart)
 
 		// update status field base on the advertised start time
 		if advertisedStart.After(time.Now()) {
@@ -207,7 +202,7 @@ func (r *racesRepo) getFilter(query string, filter *racing.GetRacesRequest) (str
 		return query, args, nil
 	}
 
-	// Filter by an array of car policy ids
+	// Filter by an array of sport ids
 	if len(filter.Id) > 0 {
 		clauses = " WHERE id IN (" + strings.Repeat("?,", len(filter.Id)-1) + "?)"
 		for _, raceId := range filter.Id {
