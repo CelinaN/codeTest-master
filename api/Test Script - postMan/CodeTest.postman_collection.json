@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "List Races with meetingId filter only",
+			"name": "Task 1- filter meetingId only",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -35,13 +35,13 @@
 			"response": []
 		},
 		{
-			"name": "List Races with visible filter - TRUE",
+			"name": "Task 1 - filter meetingId + visible (TRUE)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"filter\": {\"meeting_id\":[1,2],\"visible\":\"TRUE\"}\r\n}",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[1,2],\"visible\":\"TRUE\"}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -64,13 +64,187 @@
 			"response": []
 		},
 		{
-			"name": "List Races with visible filter - FALSE",
+			"name": "Task 1 - filter meetingId + visible (FALSE)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"filter\": {\"meeting_id\":[1,2],\"visible\":\"FALSE\"}\r\n}",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[1],\"visible\":\"FALSE\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 1 - filter visible (TRUE) only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"visible\":\"TRUE\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 1 - No filter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": { }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 2 - order by default + filter meetingId",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[2]}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 2 - order by NAME + filter meetingId",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[1,2],\"order_by\":\"NAME\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 2 - order by NUMBER + filter meetingId + visible (TRUE)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"meeting_ids\":[1],\"visible\":\"TRUE\",\"order_by\":\"NUMBER\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task 2 - order by MEETING_ID + no filter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"order_by\":\"MEETING_ID\"}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
