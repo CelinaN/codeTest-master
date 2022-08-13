@@ -135,6 +135,13 @@ func (m *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
 
 		race.AdvertisedStartTime = ts
 
+		// update status field base on the advertised start time
+		if advertisedStart.After(time.Now()) {
+			race.Status = "OPEN"
+		} else {
+			race.Status = "CLOSED"
+		}
+
 		races = append(races, &race)
 
 	}

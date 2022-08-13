@@ -265,6 +265,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Task 3 - add Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filter\": {\"order_by\":\"ID\"}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/list-races",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"list-races"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
