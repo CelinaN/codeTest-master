@@ -12,6 +12,13 @@ import (
 	"git.neds.sh/matty/entain/racing/proto/racing"
 )
 
+const (
+	StatusOpen   = "OPEN"
+	StatusClosed = "CLOSED"
+	VisibleTrue  = "TRUE"
+	VisibleFalse = "FALSE"
+)
+
 // RacesRepo provides repository access to races.
 type RacesRepo interface {
 	// Init will initialise our races repository.
@@ -89,10 +96,10 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 	}
 
 	// populate pass in filter value
-	if filter.Visible == "TRUE" {
+	if filter.Visible == VisibleTrue {
 		visibleValue = "1"
 	}
-	if filter.Visible == "FALSE" {
+	if filter.Visible == VisibleFalse {
 		visibleValue = "0"
 	}
 
@@ -135,9 +142,9 @@ func (r *racesRepo) scanRaces(rows *sql.Rows) ([]*racing.Race, error) {
 
 		// update status field base on the advertised start time
 		if advertisedStart.After(time.Now()) {
-			race.Status = "OPEN"
+			race.Status = StatusOpen
 		} else {
-			race.Status = "CLOSED"
+			race.Status = StatusClosed
 		}
 
 		races = append(races, &race)
